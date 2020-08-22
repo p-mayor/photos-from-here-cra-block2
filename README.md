@@ -2,7 +2,9 @@
 
 This is a demo project showing how to use the built-in fetch method to connect to the flickr API and display some photos for the user. The user is also able to input their own search term and location so they can get pictures from flickr of whatever they want, from whatever location they want.
 
-See `src/flickrService.js` for the function containing the fetch request.
+See `src/flickrService.js` for the flickr fetch request.
+
+See `src/googleMapsService.js` for the google maps API request.
 
 See `src/Display.jsx` for the react component which handles displaying the images and getting input from the user.
 
