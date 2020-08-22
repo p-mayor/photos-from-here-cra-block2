@@ -8,6 +8,7 @@ See `src/Display.jsx` for the react component which handles displaying the image
 
 - [Flickr API Docs](https://www.flickr.com/services/api/)
 
+Note: it is a bad practice to store API keys in your user-facing code. Instead, you should use a `.env` file. For more info, see [this guide](https://www.pluralsight.com/guides/hiding-secret-keys-in-create-react-app)
 
 # Initial CRA README
 
