@@ -54,7 +54,7 @@ class Display extends React.Component {
         })
     }
 
-    // use googleMaps to look up lat/lon based on city
+    // use googleMaps API to look up lat/lon based on city
     reverseGeocodeCity() {
         googleMapsService(this.state, true).then((loc) => {
             const cityLat = loc.results[0].geometry.location.lat
@@ -66,6 +66,7 @@ class Display extends React.Component {
         })
     }
 
+    // use googleMaps API to look up city based on lat/lon
     geocodeLocation() {
         googleMapsService(this.state, false).then((loc) => {
             const array = loc.plus_code.compound_code.split(" ")
