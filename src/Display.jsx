@@ -49,6 +49,7 @@ class Display extends React.Component {
         })
     }
 
+    // use googleMaps to look up lat/lon based on city
     reverseGeocodeCity() {
         googleMapsService(this.state).then((loc) => {
             console.log(loc.results[0].geometry.location)
@@ -111,7 +112,7 @@ class Display extends React.Component {
                     <button onClick={this.handleNext}>Next Photo</button>
                     <br />
                     <img src={photoURL} alt="flickr img" />
-                    <h3>{currentPhotoObj.title}</h3>
+                    <h3>{currentPhotoObj.title || "No Title"}</h3>
                     <form onSubmit={this.handleSubmit}>
                         <fieldset>
                             <legend>Get Different Photos</legend>
