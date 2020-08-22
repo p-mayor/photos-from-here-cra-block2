@@ -1,5 +1,6 @@
 import React from 'react'
 import flickrService from './flickrService'
+import googleMapsService from './googleMapsService'
 
 class Display extends React.Component {
     constructor(props) {
@@ -9,11 +10,13 @@ class Display extends React.Component {
             currentNumber: 0,
             lat: 25.034281,
             lon: -77.396278,
-            searchTerm: '',
+            city: 'Nassau, The Bahamas',
+            searchTerm: 'dog',
+            photoCount: 5,
             formData: {
                 searchTerm: '',
-                latitude: '',
-                longitude: ''
+                city: '',
+                photoCount: 1
             }
         }
     }
@@ -42,8 +45,18 @@ class Display extends React.Component {
     // get pictures from the flickr api
     getPictures() {
         flickrService(this.state).then((responsePhotoObject) => {
-                this.setState({ photos: responsePhotoObject.photos.photo })
-            })
+            this.setState({ photos: responsePhotoObject.photos.photo })
+        })
+    }
+
+    reverseGeocodeCity() {
+        googleMapsService(this.state).then((loc) => {
+            console.log(loc.results[0].geometry.location)
+            this.setState({
+                lat: loc.results[0].geometry.location.lat,
+                lon: loc.results[0].geometry.location.lng,
+            }, this.getPictures)
+        })
     }
 
     // construct an image URL from the photoObj we got from flickr
@@ -71,12 +84,12 @@ class Display extends React.Component {
 
         this.setState((prevState) => {
             return {
-                lat: prevState.formData.latitude,
-                lon: prevState.formData.longitude,
-                searchTerm: prevState.formData.searchTerm,
-                currentNumber: 0 
+                city: prevState.formData.city || prevState.city,
+                searchTerm: prevState.formData.searchTerm || prevState.searchTerm,
+                photoCount: prevState.formData.photoCount,
+                currentNumber: 0
             }
-        }, this.getPictures);
+        }, this.reverseGeocodeCity);
     }
 
     // handle when the user changes the data in the input fields on the form
@@ -100,38 +113,46 @@ class Display extends React.Component {
                     <img src={photoURL} alt="flickr img" />
                     <h3>{currentPhotoObj.title}</h3>
                     <form onSubmit={this.handleSubmit}>
-                        <div>
-                            <label htmlFor="searchTerm">Search Term</label>
-                            <input
-                                type="text"
-                                name="searchTerm"
-                                value={this.state.formData.searchTerm}
-                                onChange={this.handleChange}
-                            />
-                        </div>
+                        <fieldset>
+                            <legend>Get Different Photos</legend>
+                            <div>
+                                <label htmlFor="searchTerm">Search Term: </label>
+                                <br />
+                                <input
+                                    type="text"
+                                    name="searchTerm"
+                                    value={this.state.formData.searchTerm}
+                                    onChange={this.handleChange}
+                                />
+                            </div>
 
-                        <div>
-                            <label htmlFor="latitude">Latitude</label>
-                            <input
-                                type="text"
-                                name="latitude"
-                                value={this.state.formData.latitude}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="longitude">Longitude</label>
-                            <input
-                                type="text"
-                                name="longitude"
-                                value={this.state.formData.longitude}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-
-                        <button>Submit Form</button>
-
+                            <div>
+                                <label htmlFor="city">City (e.g. Atlanta, GA or London, England): </label>
+                                <br />
+                                <input
+                                    type="text"
+                                    name="city"
+                                    value={this.state.formData.city}
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="city">Photo Count: </label>
+                                <br />
+                                <input
+                                    type="number"
+                                    name="photoCount"
+                                    value={this.state.formData.photoCount}
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                            <h4>(Leave field empty to use previous search parameters)</h4>
+                            <div>
+                                <h3>Previous Search:</h3>
+                                Search Term: {this.state.searchTerm}, City: {this.state.city}, Photo Count: {this.state.photoCount}
+                            </div>
+                        </fieldset>
+                        <button>Submit</button>
                     </form>
                 </div>
             )
