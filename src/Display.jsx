@@ -28,7 +28,7 @@ class Display extends React.Component {
 
     // get the location from the user
     getLocation() {
-        let onSuccess = (location) => {
+        const onSuccess = (location) => {
             this.setState({
                 lat: location.coords.latitude,
                 lon: location.coords.longitude
@@ -37,7 +37,7 @@ class Display extends React.Component {
                 this.geocodeLocation()
             })
         }
-        let onFail = (err) => {
+        const onFail = (err) => {
             console.warn(err.message)
             this.getPictures()
         }
