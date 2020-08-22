@@ -32,7 +32,10 @@ class Display extends React.Component {
             this.setState({
                 lat: location.coords.latitude,
                 lon: location.coords.longitude
-            }, this.getPictures)
+            }, ()=>{
+                this.getPictures()
+                this.geocodeLocation()
+            })
         }
         let onFail = (err) => {
             console.warn(err.message)
@@ -40,6 +43,8 @@ class Display extends React.Component {
         }
 
         navigator.geolocation.getCurrentPosition(onSuccess, onFail)
+
+        
     }
 
     // get pictures from the flickr api
@@ -51,12 +56,24 @@ class Display extends React.Component {
 
     // use googleMaps to look up lat/lon based on city
     reverseGeocodeCity() {
-        googleMapsService(this.state).then((loc) => {
-            console.log(loc.results[0].geometry.location)
+        googleMapsService(this.state, true).then((loc) => {
+            const cityLat = loc.results[0].geometry.location.lat
+            const cityLon = loc.results[0].geometry.location.lng
             this.setState({
-                lat: loc.results[0].geometry.location.lat,
-                lon: loc.results[0].geometry.location.lng,
+                lat: cityLat,
+                lon: cityLon
             }, this.getPictures)
+        })
+    }
+
+    geocodeLocation() {
+        googleMapsService(this.state, false).then((loc) => {
+            const array = loc.plus_code.compound_code.split(" ")
+            array.shift()
+            const city = array.join(" ")
+            this.setState({
+                city: city
+            })
         })
     }
 
@@ -150,7 +167,7 @@ class Display extends React.Component {
                             <h4>(Leave field empty to use previous search parameters)</h4>
                             <div>
                                 <h3>Previous Search:</h3>
-                                Search Term: {this.state.searchTerm}, City: {this.state.city}, Photo Count: {this.state.photoCount}
+                                Search Term: <strong>{this.state.searchTerm}</strong>, City: <strong>{this.state.city}</strong>, Photo Count: <strong>{this.state.photoCount}</strong>
                             </div>
                         </fieldset>
                         <button>Submit</button>
