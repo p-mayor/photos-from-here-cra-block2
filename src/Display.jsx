@@ -105,7 +105,7 @@ class Display extends React.Component {
             return {
                 city: prevState.formData.city || prevState.city,
                 searchTerm: prevState.formData.searchTerm || prevState.searchTerm,
-                photoCount: prevState.formData.photoCount,
+                photoCount: prevState.formData.photoCount || prevState.photoCount,
                 currentNumber: 0
             }
         }, this.reverseGeocodeCity);
