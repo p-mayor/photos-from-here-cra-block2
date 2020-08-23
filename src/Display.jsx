@@ -32,7 +32,7 @@ class Display extends React.Component {
             this.setState({
                 lat: location.coords.latitude,
                 lon: location.coords.longitude
-            }, ()=>{
+            }, () => {
                 this.getPictures()
                 this.geocodeLocation()
             })
@@ -44,7 +44,7 @@ class Display extends React.Component {
 
         navigator.geolocation.getCurrentPosition(onSuccess, onFail)
 
-        
+
     }
 
     // get pictures from the flickr api
