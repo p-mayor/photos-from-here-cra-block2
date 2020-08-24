@@ -120,7 +120,9 @@ class Display extends React.Component {
     // handle when the user submits the form data
     handleSubmit = (event) => {
         event.preventDefault();
-
+        if (!this.state.formData.city &&
+            !this.state.formData.searchTerm
+        ) return
         this.setState((prevState) => {
             return {
                 city: prevState.formData.city || prevState.city,
@@ -156,11 +158,10 @@ class Display extends React.Component {
                     Search Term: <strong>{this.state.searchTerm}</strong>,
                     City: <strong>{this.state.city}</strong>,
                     Photo Count: <strong>{this.state.photoCount}</strong>
-                    
                 </fieldset>
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <legend>Get Different Photos</legend>
+                        <legend>Customize Your Search</legend>
                         <div>
                             <label htmlFor="searchTerm">Search Term: </label>
                             <br />
@@ -171,7 +172,6 @@ class Display extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-
                         <div>
                             <label htmlFor="city">City: </label>
                             <br />
@@ -193,8 +193,7 @@ class Display extends React.Component {
                             />
                         </div>
                     </fieldset>
-                    <button>Submit</button>
-                    <h4>(Leave field empty to use previous search parameters)</h4>
+                    <button>Get More Photos</button>
                 </form>
             </div>
         )
