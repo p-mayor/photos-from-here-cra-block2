@@ -64,6 +64,14 @@ class Display extends React.Component {
     // use googleMaps API to look up lat/lon based on city
     reverseGeocodeCity() {
         googleMapsService(this.state, true).then((loc) => {
+            if(loc.status === "ZERO_RESULTS"){
+                console.log("location not found")
+                this.setState({
+                    total: "0",
+                    currentNumber: 0
+                })
+                return
+            }
             const cityLat = loc.results[0].geometry.location.lat
             const cityLon = loc.results[0].geometry.location.lng
             this.setState({
@@ -146,7 +154,7 @@ class Display extends React.Component {
             <div className="Display">
                 <div>
                     <button onClick={this.handlePrev}>Last Photo</button>
-                    <strong>Current Photo: {this.state.currentNumber + 1} / {this.state.photoCount}</strong>
+                    <strong>Current Photo: {this.state.currentNumber + 1} / {Math.min(this.state.total, this.state.photoCount)}</strong>
                     <button onClick={this.handleNext}>Next Photo</button>
                     <Photo
                         total={this.state.total}

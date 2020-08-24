@@ -9,7 +9,7 @@ function googleMapsService(state, isReverse) {
     } else {
         URL += geocodeQuery
     }
-    return fetch(URL).then(response => response.json())
+    return fetch(URL).then(response => response.json()).catch(err=>console.warn(err))
 }
 
 export default googleMapsService
