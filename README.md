@@ -2,7 +2,7 @@
 
 This is a demo project showing how to use the built-in fetch method to connect to the flickr API and display some photos for the user. The user is also able to input their own search term and location so they can get pictures from flickr of whatever they want, from whatever location they want.
 
-For the commit without the google maps service and just the basic lat/long serach see [this commit](https://github.com/p-mayor/photos-from-here-cra-block2/tree/ea08d2821ff58fba9a567c59a0537007b88acf79/)
+For the repo without the google maps service and just the basic lat/long search see [this commit](https://github.com/p-mayor/photos-from-here-cra-block2/tree/ea08d2821ff58fba9a567c59a0537007b88acf79/)
 
 - [Flickr API Docs](https://www.flickr.com/services/api/)
 - [Google's Geocoding Docs](https://developers.google.com/maps/documentation/geocoding/overview)
