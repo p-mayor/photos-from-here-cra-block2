@@ -1,6 +1,6 @@
 import React from 'react'
-import flickrService from './flickrService'
-import googleMapsService from './googleMapsService'
+import flickrService from '../services/flickrService'
+import googleMapsService from '../services/googleMapsService'
 import Photo from './Photo'
 
 class Display extends React.Component {

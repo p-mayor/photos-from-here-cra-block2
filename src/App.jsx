@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Display from "./Display"
+import Display from "./components/Display"
 
 function App() {
   return (
