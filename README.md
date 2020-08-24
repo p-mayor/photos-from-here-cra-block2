@@ -11,7 +11,7 @@ See `src/Display.jsx` for the react component which handles displaying the image
 - [Flickr API Docs](https://www.flickr.com/services/api/)
 - [Google's Geocoding Docs](https://developers.google.com/maps/documentation/geocoding/overview)
 
-Note: it is a bad practice to store API keys in your user-facing code. Instead, you should use a `.env` file. For more info, see [this guide](https://www.pluralsight.com/guides/hiding-secret-keys-in-create-react-app). Even using this method, your API key will still be made public when your app is compiled and deployed, it will just be slightly harder to find. A better practice would be to store the API keys on your backend server so that the client never has access to them. I have set API key restrictions on the keys suppled in this deployment to avoid misuse.  
+Note: it is a bad practice to store API keys in your client code. Instead, you should use a `.env` file. For more info, see [this guide](https://www.pluralsight.com/guides/hiding-secret-keys-in-create-react-app). Even using this method, your API key will still be made public when your app is compiled and deployed via github pages, it will just be slightly harder to find. A better practice would be to store the API keys on your backend server so that the client never has access to them. This is easy to set up when deploying via [heroku](https://blog.heroku.com/deploying-react-with-zero-configuration)
 
 # Initial CRA README
 

@@ -1,12 +1,14 @@
 import React from 'react'
 import flickrService from './flickrService'
 import googleMapsService from './googleMapsService'
+import Photo from './Photo'
 
 class Display extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             photos: [],
+            total: null,
             currentNumber: 0,
             lat: 25.034281,
             lon: -77.396278,
@@ -41,16 +43,21 @@ class Display extends React.Component {
             console.warn(err.message)
             this.getPictures()
         }
-
         navigator.geolocation.getCurrentPosition(onSuccess, onFail)
-
-
     }
 
     // get pictures from the flickr api
     getPictures() {
         flickrService(this.state).then((responsePhotoObject) => {
-            this.setState({ photos: responsePhotoObject.photos.photo })
+            if (!responsePhotoObject) return
+            const photosWithURLS = responsePhotoObject.photos.photo.map((photoObj) => {
+                photoObj.photoURL = this.constructImageURL(photoObj)
+                return photoObj
+            })
+            this.setState({
+                photos: photosWithURLS,
+                total: responsePhotoObject.photos.total
+            })
         })
     }
 
@@ -80,6 +87,7 @@ class Display extends React.Component {
 
     // construct an image URL from the photoObj we got from flickr
     constructImageURL(photoObj) {
+        if (!photoObj) return
         return "https://farm" + photoObj.farm +
             ".staticflickr.com/" + photoObj.server +
             "/" + photoObj.id + "_" + photoObj.secret + ".jpg";
@@ -93,6 +101,18 @@ class Display extends React.Component {
                 return { currentNumber: 0 }
             } else {
                 return { currentNumber: prevState.currentNumber + 1 }
+            }
+        })
+    }
+
+    handlePrev = () => {
+        this.setState((prevState) => {
+            const atStart = prevState.currentNumber === 0
+            const finalIndex = prevState.photos.length - 1
+            if (atStart) {
+                return { currentNumber: finalIndex }
+            } else {
+                return { currentNumber: prevState.currentNumber - 1 }
             }
         })
     }
@@ -120,62 +140,64 @@ class Display extends React.Component {
     }
 
     render() {
-        if (this.state.photos.length === 0) {
-            return <div>Loading...</div>
-        } else {
-            const currentPhotoObj = this.state.photos[this.state.currentNumber]
-            const photoURL = this.constructImageURL(currentPhotoObj)
-            return (
-                <div className="Display">
+        return (
+            <div className="Display">
+                <div>
+                    <button onClick={this.handlePrev}>Last Photo</button>
+                    <strong>Current Photo: {this.state.currentNumber + 1} / {this.state.photoCount}</strong>
                     <button onClick={this.handleNext}>Next Photo</button>
-                    <br />
-                    <img src={photoURL} alt="flickr img" />
-                    <h3>{currentPhotoObj.title || "No Title"}</h3>
-                    <form onSubmit={this.handleSubmit}>
-                        <fieldset>
-                            <legend>Get Different Photos</legend>
-                            <div>
-                                <label htmlFor="searchTerm">Search Term: </label>
-                                <br />
-                                <input
-                                    type="text"
-                                    name="searchTerm"
-                                    value={this.state.formData.searchTerm}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="city">City (e.g. Atlanta, GA or London, England): </label>
-                                <br />
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={this.state.formData.city}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="city">Photo Count: </label>
-                                <br />
-                                <input
-                                    type="number"
-                                    name="photoCount"
-                                    value={this.state.formData.photoCount}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                            <h4>(Leave field empty to use previous search parameters)</h4>
-                            <div>
-                                <h3>Previous Search:</h3>
-                                Search Term: <strong>{this.state.searchTerm}</strong>, City: <strong>{this.state.city}</strong>, Photo Count: <strong>{this.state.photoCount}</strong>
-                            </div>
-                        </fieldset>
-                        <button>Submit</button>
-                    </form>
+                    <Photo
+                        total={this.state.total}
+                        photoObj={this.state.photos[this.state.currentNumber]}
+                    />
                 </div>
-            )
-        }
+                <fieldset>
+                    <legend>Current Search:</legend>
+                    Search Term: <strong>{this.state.searchTerm}</strong>,
+                    City: <strong>{this.state.city}</strong>,
+                    Photo Count: <strong>{this.state.photoCount}</strong>
+                    
+                </fieldset>
+                <form onSubmit={this.handleSubmit}>
+                    <fieldset>
+                        <legend>Get Different Photos</legend>
+                        <div>
+                            <label htmlFor="searchTerm">Search Term: </label>
+                            <br />
+                            <input
+                                type="text"
+                                name="searchTerm"
+                                value={this.state.formData.searchTerm}
+                                onChange={this.handleChange}
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="city">City: </label>
+                            <br />
+                            <input
+                                type="text"
+                                name="city"
+                                value={this.state.formData.city}
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="city">Photo Count: </label>
+                            <br />
+                            <input
+                                type="number"
+                                name="photoCount"
+                                value={this.state.formData.photoCount}
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                    </fieldset>
+                    <button>Submit</button>
+                    <h4>(Leave field empty to use previous search parameters)</h4>
+                </form>
+            </div>
+        )
     }
 }
 
