@@ -1,54 +1,60 @@
 import React from 'react'
 
 function PhotoForm(props) {
-    const { searchTerm, city, photoCount, formData, isPhotoButtonDisabled } = props.inState
+    const {
+        formData,
+        isPhotoButtonDisabled,
+        locationDenied,
+        isLocButtonDisabled
+    } = props.inState
+    const locationButton = locationDenied ?
+        "Update your device's location settings to enable geolocation features." :
+        (<button
+            onClick={props.getLocationHandler}
+            disabled={isLocButtonDisabled}
+        >
+            Get Photos From My Location
+        </button>)
     return (
-        <>
-            <fieldset>
-                <legend>Current Search:</legend><span>
-                    Search Term: <strong>{searchTerm}</strong>,City: <strong>{city}
-                    </strong>,Photo Count: <strong>{photoCount}</strong>
-                </span>
-            </fieldset>
+        <details>
+            <summary>Click to Customize Your Search</summary>
             <form onSubmit={props.handleSubmit}>
-                <fieldset>
-                    <legend>Customize Your Search</legend>
-                    <div>
-                        <label htmlFor="searchTerm">Search Term:</label>
-                        <br />
-                        <input
-                            type="text"
-                            name="searchTerm"
-                            value={formData.searchTerm}
-                            onChange={props.handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="city">City:</label>
-                        <br />
-                        <input
-                            type="text"
-                            name="city"
-                            value={formData.city}
-                            onChange={props.handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="city">Photo Count:</label>
-                        <br />
-                        <input
-                            type="number"
-                            name="photoCount"
-                            value={formData.photoCount}
-                            onChange={props.handleChange}
-                        />
-                    </div>
+                <div>
+                    <label htmlFor="searchTerm">Search Term:</label>
                     <br />
-                    <button disabled={isPhotoButtonDisabled}>Get More Photos</button>
-                </fieldset>
+                    <input
+                        type="text"
+                        name="searchTerm"
+                        value={formData.searchTerm}
+                        onChange={props.handleChange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="city">City:</label>
+                    <br />
+                    <input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={props.handleChange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="city">Photo Count:</label>
+                    <br />
+                    <input
+                        type="number"
+                        name="photoCount"
+                        value={formData.photoCount}
+                        onChange={props.handleChange}
+                    />
+                </div>
                 <br />
+                <button disabled={isPhotoButtonDisabled}>Get More Photos</button>
+                <br />
+                {locationButton}
             </form>
-        </>
+        </details>
     )
 }
 

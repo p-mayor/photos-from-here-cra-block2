@@ -44,10 +44,14 @@ class Home extends React.Component {
     getLocationHandler = () => {
 
         const onSuccess = (location) => {
-            this.setState({
-                lat: location.coords.latitude,
-                lon: location.coords.longitude,
-                isLocButtonDisabled: true,
+            this.setState((prevState) => {
+                return {
+                    lat: location.coords.latitude,
+                    lon: location.coords.longitude,
+                    isLocButtonDisabled: true,
+                    searchTerm: prevState.formData.searchTerm,
+                    photoCount: prevState.formData.photoCount
+                }
             }, () => {
                 this.getPictures()
                 this.geocodeLocation()
@@ -109,7 +113,7 @@ class Home extends React.Component {
             const city = array.join(" ")
             this.setState({
                 city: city,
-                formData: {city}
+                formData: { city }
             })
         })
     }
@@ -180,14 +184,6 @@ class Home extends React.Component {
 
     render() {
         const realPhotoCount = Math.min(this.state.total, this.state.photoCount)
-        const locationButton = this.state.locationDenied ?
-            "Update your device's location settings to enable geolocation features." :
-            (<button
-                onClick={this.getLocationHandler}
-                disabled={this.state.isLocButtonDisabled}
-            >
-                Get Photos From My Location
-            </button>)
         return (
             <div className="Home">
                 <div>
@@ -198,17 +194,18 @@ class Home extends React.Component {
                         </strong>
                         <button onClick={this.handleNext}>Next Photo</button>
                     </div>
+                    <PhotoForm
+                        inState={this.state}
+                        handleChange={this.handleChange}
+                        handleSubmit={this.handleSubmit}
+                        getLocationHandler={this.getLocationHandler}
+                    />
                     <Photo
                         total={this.state.total}
                         photoObj={this.state.photos[this.state.currentNumber]}
                     />
                 </div>
-                <PhotoForm
-                    inState={this.state}
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit}
-                />
-                {locationButton}
+
                 <Gallery
                     photos={this.state.photos}
                     searchTerm={this.state.searchTerm}
