@@ -19,6 +19,7 @@ class Home extends React.Component {
             locationDenied: false,
             isLocButtonDisabled: false,
             isPhotoButtonDisabled: false,
+            isSameCity: false,
             formData: {
                 searchTerm: '',
                 city: '',
@@ -144,13 +145,21 @@ class Home extends React.Component {
             !this.state.formData.searchTerm
         ) return
         this.setState((prevState) => {
+            const isSameCity = prevState.formData.city === prevState.city
             return {
                 city: prevState.formData.city || prevState.city,
                 searchTerm: prevState.formData.searchTerm || prevState.searchTerm,
                 photoCount: prevState.formData.photoCount || prevState.photoCount,
-                currentNumber: 0
+                currentNumber: 0,
+                isSameCity: isSameCity
             }
-        }, this.reverseGeocodeCity);
+        }, () => {
+            if(this.state.isSameCity) {
+                this.getPictures()
+            } else {
+                this.reverseGeocodeCity()
+            }
+        });
     }
 
     // handle when the user changes the data in the input fields on the form
