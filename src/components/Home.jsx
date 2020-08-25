@@ -233,7 +233,11 @@ class Home extends React.Component {
                         Get Photos From My Location
                     </button>
                 }
-                <Gallery photos={this.state.photos} />
+                <Gallery
+                    photos={this.state.photos}
+                    searchTerm={this.state.searchTerm}
+                    city={this.state.city}
+                />
             </div>
         )
     }
