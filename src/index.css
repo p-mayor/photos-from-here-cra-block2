@@ -12,7 +12,8 @@ code {
     monospace;
 }
 
-.Display {
+.Home {
   display:flex;
   flex-direction: column;
+  align-items: center;
 }

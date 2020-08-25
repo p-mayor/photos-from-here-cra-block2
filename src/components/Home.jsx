@@ -2,8 +2,9 @@ import React from 'react'
 import flickrService from '../services/flickrService'
 import googleMapsService from '../services/googleMapsService'
 import Photo from './Photo'
+import Gallery from './Gallery'
 
-class Display extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -151,7 +152,7 @@ class Display extends React.Component {
 
     render() {
         return (
-            <div className="Display">
+            <div className="Home">
                 <div>
                     <button onClick={this.handlePrev}>Last Photo</button>
                     <strong>Current Photo: {this.state.currentNumber + 1} / {Math.min(this.state.total, this.state.photoCount)}</strong>
@@ -203,9 +204,10 @@ class Display extends React.Component {
                     </fieldset>
                     <button>Get More Photos</button>
                 </form>
+                <Gallery photos={this.state.photos}/>
             </div>
         )
     }
 }
 
-export default Display;
+export default Home;
