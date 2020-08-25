@@ -14,7 +14,7 @@ class Home extends React.Component {
             lat: 25.034281,
             lon: -77.396278,
             city: 'Nassau, The Bahamas',
-            searchTerm: 'dog',
+            searchTerm: 'chicken',
             photoCount: 5,
             locationDenied: false,
             isLocButtonDisabled: false,
