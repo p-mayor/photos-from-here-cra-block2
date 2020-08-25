@@ -3,27 +3,34 @@ import flickrService from '../services/flickrService'
 import googleMapsService from '../services/googleMapsService'
 import Photo from './Photo'
 import Gallery from './Gallery'
+import PhotoForm from './PhotoForm'
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
+
+        this.init = {
+            city: 'Nassau, The Bahamas',
+            searchTerm: 'chicken'
+        }
+
         this.state = {
             photos: [],
             total: null,
             currentNumber: 0,
             lat: 25.034281,
             lon: -77.396278,
-            city: 'Nassau, The Bahamas',
-            searchTerm: 'chicken',
+            city: this.init.city,
+            searchTerm: this.init.searchTerm,
             photoCount: 5,
             locationDenied: false,
             isLocButtonDisabled: false,
             isPhotoButtonDisabled: false,
             isSameCity: false,
             formData: {
-                searchTerm: '',
-                city: '',
-                photoCount: 1
+                searchTerm: this.init.searchTerm,
+                city: this.init.city,
+                photoCount: 5
             }
         }
     }
@@ -40,7 +47,7 @@ class Home extends React.Component {
             this.setState({
                 lat: location.coords.latitude,
                 lon: location.coords.longitude,
-                isLocButtonDisabled: true
+                isLocButtonDisabled: true,
             }, () => {
                 this.getPictures()
                 this.geocodeLocation()
@@ -101,7 +108,8 @@ class Home extends React.Component {
             array.shift()
             const city = array.join(" ")
             this.setState({
-                city: city
+                city: city,
+                formData: {city}
             })
         })
     }
@@ -172,6 +180,14 @@ class Home extends React.Component {
 
     render() {
         const realPhotoCount = Math.min(this.state.total, this.state.photoCount)
+        const locationButton = this.state.locationDenied ?
+            "Update your device's location settings to enable geolocation features." :
+            (<button
+                onClick={this.getLocationHandler}
+                disabled={this.state.isLocButtonDisabled}
+            >
+                Get Photos From My Location
+            </button>)
         return (
             <div className="Home">
                 <div>
@@ -187,60 +203,12 @@ class Home extends React.Component {
                         photoObj={this.state.photos[this.state.currentNumber]}
                     />
                 </div>
-                <fieldset>
-                    <legend>Current Search:</legend>
-                    Search Term: <strong>{this.state.searchTerm}</strong>,
-                    City: <strong>{this.state.city}</strong>,
-                    Photo Count: <strong>{this.state.photoCount}</strong>
-                </fieldset>
-                <form onSubmit={this.handleSubmit}>
-                    <fieldset>
-                        <legend>Customize Your Search</legend>
-                        <div>
-                            <label htmlFor="searchTerm">Search Term: </label>
-                            <br />
-                            <input
-                                type="text"
-                                name="searchTerm"
-                                value={this.state.formData.searchTerm}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="city">City: </label>
-                            <br />
-                            <input
-                                type="text"
-                                name="city"
-                                value={this.state.formData.city}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="city">Photo Count: </label>
-                            <br />
-                            <input
-                                type="number"
-                                name="photoCount"
-                                value={this.state.formData.photoCount}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <br />
-                        <button disabled={this.state.isPhotoButtonDisabled}>Get More Photos</button>
-                    </fieldset>
-                    <br />
-                </form>
-                {this.state.locationDenied ?
-                    "Update your device's location settings to enable geolocation features."
-                    :
-                    <button
-                        onClick={this.getLocationHandler}
-                        disabled={this.state.isLocButtonDisabled}
-                    >
-                        Get Photos From My Location
-                    </button>
-                }
+                <PhotoForm
+                    inState={this.state}
+                    handleChange={this.handleChange}
+                    handleSubmit={this.handleSubmit}
+                />
+                {locationButton}
                 <Gallery
                     photos={this.state.photos}
                     searchTerm={this.state.searchTerm}

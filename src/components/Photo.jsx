@@ -10,6 +10,7 @@ function Photo(props) {
             <div className="Photo">
                 <div>
                     <img src={props.photoObj.photoURL} alt="flickr img" />
+                    <br />
                     <figcaption><em>{props.photoObj.title || "No Title"}</em></figcaption>
                 </div>
             </div>
