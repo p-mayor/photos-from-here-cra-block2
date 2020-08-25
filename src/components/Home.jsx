@@ -47,7 +47,6 @@ class Home extends React.Component {
         }
         const onFail = (err) => {
             console.warn(err.message)
-            this.getPictures()
             this.setState({ locationDenied: true })
         }
         navigator.geolocation.getCurrentPosition(onSuccess, onFail)
