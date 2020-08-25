@@ -30,6 +30,7 @@ code {
 
 .Gallery img {
   margin: 10px;
+  max-width: 100vw;
 }
 
 .Photo {
@@ -37,6 +38,10 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.Photo img {
+  max-width: 100%;
 }
 
 .photoControls {
