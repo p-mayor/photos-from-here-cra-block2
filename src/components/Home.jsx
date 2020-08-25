@@ -16,6 +16,9 @@ class Home extends React.Component {
             city: 'Nassau, The Bahamas',
             searchTerm: 'dog',
             photoCount: 5,
+            locationDenied: false,
+            isLocButtonDisabled: false,
+            isPhotoButtonDisabled: false,
             formData: {
                 searchTerm: '',
                 city: '',
@@ -26,15 +29,17 @@ class Home extends React.Component {
 
     // this lifecycle method runs after the components first render
     componentDidMount() {
-        this.getLocation()
+        this.getPictures()
     }
 
     // get the location from the user
-    getLocation() {
+    getLocationHandler = () => {
+
         const onSuccess = (location) => {
             this.setState({
                 lat: location.coords.latitude,
-                lon: location.coords.longitude
+                lon: location.coords.longitude,
+                isLocButtonDisabled: true
             }, () => {
                 this.getPictures()
                 this.geocodeLocation()
@@ -43,8 +48,12 @@ class Home extends React.Component {
         const onFail = (err) => {
             console.warn(err.message)
             this.getPictures()
+            this.setState({ locationDenied: true })
         }
         navigator.geolocation.getCurrentPosition(onSuccess, onFail)
+
+        // ref:https://stackoverflow.com/questions/44155442/how-i-can-disable-a-button-in-react-js-for-5-seconds-after-click-event
+        setTimeout(() => this.setState({ isLocButtonDisabled: false }), 10000);
     }
 
     // get pictures from the flickr api
@@ -57,15 +66,18 @@ class Home extends React.Component {
             })
             this.setState({
                 photos: photosWithURLS,
-                total: responsePhotoObject.photos.total
+                total: responsePhotoObject.photos.total,
+                currentNumber: 0,
+                isPhotoButtonDisabled: true
             })
         })
+        setTimeout(() => this.setState({ isPhotoButtonDisabled: false }), 10000);
     }
 
     // use googleMaps API to look up lat/lon based on city
     reverseGeocodeCity() {
         googleMapsService(this.state, true).then((loc) => {
-            if(loc.status === "ZERO_RESULTS"){
+            if (loc.status === "ZERO_RESULTS") {
                 console.log("location not found")
                 this.setState({
                     total: "0",
@@ -151,12 +163,17 @@ class Home extends React.Component {
     }
 
     render() {
+        const realPhotoCount = Math.min(this.state.total, this.state.photoCount)
         return (
             <div className="Home">
                 <div>
-                    <button onClick={this.handlePrev}>Last Photo</button>
-                    <strong>Current Photo: {this.state.currentNumber + 1} / {Math.min(this.state.total, this.state.photoCount)}</strong>
-                    <button onClick={this.handleNext}>Next Photo</button>
+                    <div className="photoControls">
+                        <button onClick={this.handlePrev}>Last Photo</button>
+                        <strong>
+                            Current Photo: {this.state.currentNumber + 1} / {realPhotoCount}
+                        </strong>
+                        <button onClick={this.handleNext}>Next Photo</button>
+                    </div>
                     <Photo
                         total={this.state.total}
                         photoObj={this.state.photos[this.state.currentNumber]}
@@ -201,10 +218,22 @@ class Home extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </div>
+                        <br />
+                        <button disabled={this.state.isPhotoButtonDisabled}>Get More Photos</button>
                     </fieldset>
-                    <button>Get More Photos</button>
+                    <br />
                 </form>
-                <Gallery photos={this.state.photos}/>
+                {this.state.locationDenied ?
+                    "Check your location settings to enable geolocation features."
+                    :
+                    <button
+                        onClick={this.getLocationHandler}
+                        disabled={this.state.isLocButtonDisabled}
+                    >
+                        Get Photos From My Location
+                    </button>
+                }
+                <Gallery photos={this.state.photos} />
             </div>
         )
     }

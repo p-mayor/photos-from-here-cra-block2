@@ -16,4 +16,33 @@ code {
   display:flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgb(200, 159, 132);
+}
+
+.Gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+  background-color: rgb(56, 51, 44);
+}
+
+.Gallery img {
+  margin: 10px;
+}
+
+.Photo {
+  height: 550px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photoControls {
+  padding: 15px;
+}
+
+.photoControls strong {
+  padding: 15px;
 }

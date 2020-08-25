@@ -8,8 +8,10 @@ function Photo(props) {
     } else {
         return (
             <div className="Photo">
-                <img src={props.photoObj.photoURL} alt="flickr img" />
-                <h3>{props.photoObj.title || "No Title"}</h3>
+                <div>
+                    <img src={props.photoObj.photoURL} alt="flickr img" />
+                    <figcaption><em>{props.photoObj.title || "No Title"}</em></figcaption>
+                </div>
             </div>
         )
     }
