@@ -61,7 +61,7 @@ class Home extends React.Component {
         flickrService(this.state).then((responsePhotoObject) => {
             if (!responsePhotoObject) return
             const photosWithURLS = responsePhotoObject.photos.photo.map((photoObj) => {
-                photoObj.photoURL = this.constructImageURL(photoObj)
+                photoObj.photoURL = this.constructImageURL(photoObj, "z")
                 return photoObj
             })
             this.setState({
@@ -107,11 +107,11 @@ class Home extends React.Component {
     }
 
     // construct an image URL from the photoObj we got from flickr
-    constructImageURL(photoObj) {
+    constructImageURL(photoObj, size) {
         if (!photoObj) return
         return "https://farm" + photoObj.farm +
             ".staticflickr.com/" + photoObj.server +
-            "/" + photoObj.id + "_" + photoObj.secret + ".jpg";
+            "/" + photoObj.id + "_" + photoObj.secret + "_" + size + ".jpg";
     }
 
     // handle incrementing this.state.currentNumber so we can cycle through the photo array
@@ -154,7 +154,7 @@ class Home extends React.Component {
                 isSameCity: isSameCity
             }
         }, () => {
-            if(this.state.isSameCity) {
+            if (this.state.isSameCity) {
                 this.getPictures()
             } else {
                 this.reverseGeocodeCity()
@@ -245,6 +245,7 @@ class Home extends React.Component {
                     photos={this.state.photos}
                     searchTerm={this.state.searchTerm}
                     city={this.state.city}
+                    constructImageURL={this.constructImageURL}
                 />
             </div>
         )

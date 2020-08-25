@@ -31,10 +31,11 @@ code {
 .Gallery img {
   margin: 10px;
   max-width: 100vw;
+  border-radius: 5px;
 }
 
 .Photo {
-  height: 550px;
+  height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
