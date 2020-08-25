@@ -232,7 +232,7 @@ class Home extends React.Component {
                     <br />
                 </form>
                 {this.state.locationDenied ?
-                    "Check your location settings to enable geolocation features."
+                    "Update your device's location settings to enable geolocation features."
                     :
                     <button
                         onClick={this.getLocationHandler}
