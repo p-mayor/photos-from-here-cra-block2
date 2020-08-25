@@ -72,7 +72,7 @@ class Home extends React.Component {
         flickrService(this.state).then((responsePhotoObject) => {
             if (!responsePhotoObject) return
             const photosWithURLS = responsePhotoObject.photos.photo.map((photoObj) => {
-                photoObj.photoURL = this.constructImageURL(photoObj, "z")
+                photoObj.photoURL = this.constructImageURL(photoObj, "c")
                 return photoObj
             })
             this.setState({
