@@ -42,7 +42,6 @@ class Home extends React.Component {
 
     // get the location from the user
     getLocationHandler = () => {
-
         const onSuccess = (location) => {
             this.setState((prevState) => {
                 return {
@@ -52,10 +51,7 @@ class Home extends React.Component {
                     searchTerm: prevState.formData.searchTerm,
                     photoCount: prevState.formData.photoCount
                 }
-            }, () => {
-                this.getPictures()
-                this.geocodeLocation()
-            })
+            }, this.geocodeLocation)
         }
         const onFail = (err) => {
             console.warn(err.message)

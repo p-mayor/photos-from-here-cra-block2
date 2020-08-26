@@ -13,7 +13,7 @@ function PhotoForm(props) {
             onClick={props.getLocationHandler}
             disabled={isLocButtonDisabled}
         >
-            Get Photos From My Location
+            Get My Location
         </button>)
     return (
         <details>
@@ -39,6 +39,7 @@ function PhotoForm(props) {
                         onChange={props.handleChange}
                     />
                 </div>
+                {locationButton}
                 <div>
                     <label htmlFor="city">Photo Count:</label>
                     <br />
@@ -50,9 +51,7 @@ function PhotoForm(props) {
                     />
                 </div>
                 <br />
-                <button disabled={isPhotoButtonDisabled}>Get More Photos</button>
-                <br />
-                {locationButton}
+                <button type="submit" disabled={isPhotoButtonDisabled}>Get More Photos</button>
             </form>
         </details>
     )
