@@ -10,6 +10,7 @@ function PhotoForm(props) {
     const locationButton = locationDenied ?
         <div>Update your device's location settings to enable geolocation features.</div> :
         (<button
+            type="button"
             onClick={props.getLocationHandler}
             disabled={isLocButtonDisabled}
         >
