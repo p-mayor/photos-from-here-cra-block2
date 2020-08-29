@@ -204,14 +204,19 @@ class Home extends React.Component {
 
     handleRandomSearch = () => {
         const { randCity, randLat, randLon, randTerm } = this.getRandomInputs()
-        this.setState({
-            city: randCity,
-            lat: randLat,
-            lon: randLon,
-            searchTerm: randTerm,
-            formData: {
+        this.setState((prevState) => {
+            console.log(prevState)
+            return {
+                city: randCity,
+                lat: randLat,
+                lon: randLon,
                 searchTerm: randTerm,
-                city: randCity
+                photoCount: prevState.formData.photoCount,
+                formData: {
+                    searchTerm: randTerm,
+                    city: randCity,
+                    photoCount: prevState.formData.photoCount
+                }
             }
         }, () => {
             this.getPictures()
@@ -225,11 +230,11 @@ class Home extends React.Component {
             <div className="Home">
                 <div>
                     <div className="photoControls">
-                        <button onClick={this.handlePrev}>Last Photo</button>
+                        <button onClick={this.handlePrev}>Previous</button>
                         <strong>
-                            Current Photo: {this.state.currentNumber + 1} / {realPhotoCount}
+                            Current Photo: {this.state.currentNumber + 1}/ {realPhotoCount}
                         </strong>
-                        <button onClick={this.handleNext}>Next Photo</button>
+                        <button onClick={this.handleNext}>Next</button>
                     </div>
                     <PhotoForm
                         inState={this.state}
