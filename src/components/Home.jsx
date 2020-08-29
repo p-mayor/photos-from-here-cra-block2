@@ -218,10 +218,7 @@ class Home extends React.Component {
                     photoCount: prevState.formData.photoCount
                 }
             }
-        }, () => {
-            this.getPictures()
-            console.log(this.state)
-        })
+        }, this.getPictures)
     }
 
     render() {
