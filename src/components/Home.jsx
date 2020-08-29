@@ -205,7 +205,6 @@ class Home extends React.Component {
     handleRandomSearch = () => {
         const { randCity, randLat, randLon, randTerm } = this.getRandomInputs()
         this.setState((prevState) => {
-            console.log(prevState)
             return {
                 city: randCity,
                 lat: randLat,
