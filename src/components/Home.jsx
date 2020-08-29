@@ -24,6 +24,7 @@ class Home extends React.Component {
             isLocButtonDisabled: false,
             isPhotoButtonDisabled: false,
             isSameCity: false,
+            autoGal: false,
             formData: {
                 searchTerm: randTerm,
                 city: randCity,
@@ -45,7 +46,7 @@ class Home extends React.Component {
             ['London, England', [51.507351, -0.127758]],
             ['Madrid, Spain', [40.416775, -3.703790]],
             ['San Francisco, CA', [37.774929, -122.419418]],
-            ['New York City, New York', [40.7128, -74.0060]],
+            ['New York, New York', [40.7128, -74.0060]],
             ['Paris, France', [48.8566, 2.3522]],
             ['Hong Kong', [22.3193, 114.1694]],
             ['Tokyo, Japan', [35.6762, 139.6503]],
@@ -220,6 +221,25 @@ class Home extends React.Component {
         }, this.getPictures)
     }
 
+    handleAutoGallery = () => {
+        this.setState({ autoGal: true })
+        this.autoGalInterval = setInterval(() => {
+            this.setState((prevState) => {
+                const atEndOfArray = prevState.currentNumber === prevState.photos.length - 1
+                if (atEndOfArray) {
+                    return { currentNumber: 0 }
+                } else {
+                    return { currentNumber: prevState.currentNumber + 1 }
+                }
+            })
+        }, 5000);
+    }
+
+    handleStopAutoGallery = () => {
+        this.setState({ autoGal: false })
+        clearInterval(this.autoGalInterval)
+    }
+
     render() {
         const realPhotoCount = Math.min(this.state.total, this.state.photoCount)
         return (
@@ -227,9 +247,7 @@ class Home extends React.Component {
                 <div>
                     <div className="photoControls">
                         <button onClick={this.handlePrev}>Previous</button>
-                        <strong>
-                            Photo: {this.state.currentNumber + 1}/ {realPhotoCount}
-                        </strong>
+                        <span>Photo: {this.state.currentNumber + 1}/ {realPhotoCount}</span>
                         <button onClick={this.handleNext}>Next</button>
                     </div>
                     <PhotoForm
@@ -238,7 +256,10 @@ class Home extends React.Component {
                         handleSubmit={this.handleSubmit}
                         getLocationHandler={this.getLocationHandler}
                         handleRandomSearch={this.handleRandomSearch}
+                        handleAutoGallery={this.handleAutoGallery}
+                        handleStopAutoGallery={this.handleStopAutoGallery}
                     />
+                    <h3><u>"{this.state.searchTerm}" in {this.state.city}</u></h3>
                     <Photo
                         total={this.state.total}
                         photoObj={this.state.photos[this.state.currentNumber]}
