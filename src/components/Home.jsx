@@ -110,7 +110,6 @@ class Home extends React.Component {
             array.shift()
             const city = array.join(" ")
             this.setState({
-                city: city,
                 formData: { city }
             })
         })
@@ -247,9 +246,20 @@ class Home extends React.Component {
                 <div>
                     <div className="photoControls">
                         <button onClick={this.handlePrev}>Previous</button>
-                        <span>Photo: {this.state.currentNumber + 1}/ {realPhotoCount}</span>
+                        <span>{this.state.currentNumber + 1}/ {realPhotoCount}</span>
                         <button onClick={this.handleNext}>Next</button>
                     </div>
+                    {this.state.autoGal ? (
+                        <button type="button" onClick={this.handleStopAutoGallery}>
+                            Turn off Auto Gallery
+                        </button>
+                    )
+                        :
+                        (
+                            <button type="button" onClick={this.handleAutoGallery}>
+                                Turn on Auto Gallery
+                            </button>
+                        )}
                     <PhotoForm
                         inState={this.state}
                         handleChange={this.handleChange}

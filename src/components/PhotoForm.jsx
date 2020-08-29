@@ -5,8 +5,7 @@ function PhotoForm(props) {
         formData,
         isPhotoButtonDisabled,
         locationDenied,
-        isLocButtonDisabled,
-        autoGal
+        isLocButtonDisabled
     } = props.inState
     const locationButton = locationDenied ?
         <div>Update your device's location settings to enable geolocation features.</div> :
@@ -22,8 +21,6 @@ function PhotoForm(props) {
             <summary>Click to Customize Your Search</summary>
             <fieldset>
                 <form onSubmit={props.handleSubmit}>
-
-
                     <div>
                         <label htmlFor="searchTerm">Search Term:</label>
                         <br />
@@ -63,20 +60,6 @@ function PhotoForm(props) {
             <button type="button" onClick={props.handleRandomSearch}>
                 Get Random Photos
             </button>
-            <br />
-            {autoGal ? (
-                <button type="button" onClick={props.handleStopAutoGallery}>
-                    Turn off Auto Gallery
-                </button>
-            )
-            :
-            (
-                <button type="button" onClick={props.handleAutoGallery}>
-                    Turn on Auto Gallery
-                </button>
-            )
-            }
-
         </details>
     )
 }
