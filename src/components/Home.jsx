@@ -232,7 +232,7 @@ class Home extends React.Component {
                     <div className="photoControls">
                         <button onClick={this.handlePrev}>Previous</button>
                         <strong>
-                            Current Photo: {this.state.currentNumber + 1}/ {realPhotoCount}
+                            Photo: {this.state.currentNumber + 1}/ {realPhotoCount}
                         </strong>
                         <button onClick={this.handleNext}>Next</button>
                     </div>
