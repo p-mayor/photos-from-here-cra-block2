@@ -251,13 +251,13 @@ class Home extends React.Component {
                     </div>
                     {this.state.autoGal ? (
                         <button type="button" onClick={this.handleStopAutoGallery}>
-                            Turn off Auto Gallery
+                            Turn off Slideshow
                         </button>
                     )
                         :
                         (
                             <button type="button" onClick={this.handleAutoGallery}>
-                                Turn on Auto Gallery
+                                Turn on Slideshow
                             </button>
                         )}
                     <PhotoForm
@@ -269,7 +269,7 @@ class Home extends React.Component {
                         handleAutoGallery={this.handleAutoGallery}
                         handleStopAutoGallery={this.handleStopAutoGallery}
                     />
-                    <h3><u>"{this.state.searchTerm}" in {this.state.city}</u></h3>
+                    <h3><a href="https://flickr.com" target="_blank" rel="noopener noreferrer">Flickr</a> Search: "{this.state.searchTerm}" in {this.state.city}</h3>
                     <Photo
                         total={this.state.total}
                         photoObj={this.state.photos[this.state.currentNumber]}
