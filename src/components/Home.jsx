@@ -239,13 +239,19 @@ class Home extends React.Component {
         clearInterval(this.autoGalInterval)
     }
 
+    handleCurrentPhoto = (index) => {
+        this.setState({
+            currentNumber: index
+        })
+    }
+
     render() {
         const realPhotoCount = Math.min(this.state.total, this.state.photoCount)
         return (
             <div className="Home">
                 <div>
                     <div className="photoControls">
-                        <button onClick={this.handlePrev}>Previous</button>
+                        <button onClick={this.handlePrev}>Prev.</button>
                         <span>{this.state.currentNumber + 1}/ {realPhotoCount}</span>
                         <button onClick={this.handleNext}>Next</button>
                     </div>
@@ -281,6 +287,8 @@ class Home extends React.Component {
                     searchTerm={this.state.searchTerm}
                     city={this.state.city}
                     constructImageURL={this.constructImageURL}
+                    handleCurrentPhoto={this.handleCurrentPhoto}
+                    currentNumber={this.state.currentNumber}
                 />
             </div>
         )
