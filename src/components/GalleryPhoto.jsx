@@ -1,11 +1,12 @@
 import React from 'react'
+import { Image } from 'antd';
 
 function GalleryPhoto(props) {
     let image
     if(props.currentNumber === props.index){
-        image = <img src={props.src} alt={props.alt} style={{outline: "2px solid brown"}}/>
+        image = <Image src={props.src} alt={props.alt} width={230} style={{outline: "1px solid brown"}} />
     } else {
-        image = <img src={props.src} alt={props.alt} />
+        image = <Image src={props.src} alt={props.alt} width={230} />
     }
     return (
         <div className="GalleryPhoto" onClick={()=>props.handleCurrentPhoto(props.index)}>

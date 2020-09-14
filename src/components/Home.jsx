@@ -5,6 +5,8 @@ import Photo from './Photo'
 import Gallery from './Gallery'
 import PhotoForm from './PhotoForm'
 
+import { Button, Switch } from 'antd';
+
 class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -109,8 +111,12 @@ class Home extends React.Component {
             const array = loc.plus_code.compound_code.split(" ")
             array.shift()
             const city = array.join(" ")
-            this.setState({
-                formData: { city }
+            this.setState((prevState) => {
+                const newFormData = { ...prevState.formData }
+                newFormData.city = city
+                return {
+                    formData: newFormData
+                }
             })
         })
     }
@@ -221,22 +227,23 @@ class Home extends React.Component {
     }
 
     handleAutoGallery = () => {
-        this.setState({ autoGal: true })
-        this.autoGalInterval = setInterval(() => {
-            this.setState((prevState) => {
-                const atEndOfArray = prevState.currentNumber === prevState.photos.length - 1
-                if (atEndOfArray) {
-                    return { currentNumber: 0 }
-                } else {
-                    return { currentNumber: prevState.currentNumber + 1 }
-                }
-            })
-        }, 5000);
-    }
-
-    handleStopAutoGallery = () => {
-        this.setState({ autoGal: false })
-        clearInterval(this.autoGalInterval)
+        if (this.state.autoGal) {
+            clearInterval(this.autoGalInterval)
+        } else {
+            this.autoGalInterval = setInterval(() => {
+                this.setState((prevState) => {
+                    const atEndOfArray = prevState.currentNumber === prevState.photos.length - 1
+                    if (atEndOfArray) {
+                        return { currentNumber: 0 }
+                    } else {
+                        return { currentNumber: prevState.currentNumber + 1 }
+                    }
+                })
+            }, 5000);
+        }
+        this.setState((prevState) => {
+            return { autoGal: !prevState.autoGal }
+        })
     }
 
     handleCurrentPhoto = (index) => {
@@ -250,22 +257,9 @@ class Home extends React.Component {
         return (
             <div className="Home">
                 <div>
-                    <div className="photoControls">
-                        <button onClick={this.handlePrev}>Prev.</button>
-                        <span>{this.state.currentNumber + 1}/ {realPhotoCount}</span>
-                        <button onClick={this.handleNext}>Next</button>
-                    </div>
-                    {this.state.autoGal ? (
-                        <button type="button" onClick={this.handleStopAutoGallery}>
-                            Turn off Slideshow
-                        </button>
-                    )
-                        :
-                        (
-                            <button type="button" onClick={this.handleAutoGallery}>
-                                Turn on Slideshow
-                            </button>
-                        )}
+                    <h3>
+                        Flickr search: "{this.state.searchTerm}" in {this.state.city}
+                    </h3>
                     <PhotoForm
                         inState={this.state}
                         handleChange={this.handleChange}
@@ -275,13 +269,17 @@ class Home extends React.Component {
                         handleAutoGallery={this.handleAutoGallery}
                         handleStopAutoGallery={this.handleStopAutoGallery}
                     />
-                    <h3><a href="https://flickr.com" target="_blank" rel="noopener noreferrer">Flickr</a> Search: "{this.state.searchTerm}" in {this.state.city}</h3>
                     <Photo
                         total={this.state.total}
                         photoObj={this.state.photos[this.state.currentNumber]}
                     />
                 </div>
-
+                <div className="photoControls">
+                    <Button type="secondary" onClick={this.handlePrev}>Prev.</Button>
+                    <div>{this.state.currentNumber + 1}/ {realPhotoCount}</div>
+                    <Button type="secondary" onClick={this.handleNext}>Next</Button>
+                </div>
+                <Switch onChange={this.handleAutoGallery} checkedChildren="Slideshow ON" unCheckedChildren="Slideshow OFF" />
                 <Gallery
                     photos={this.state.photos}
                     searchTerm={this.state.searchTerm}

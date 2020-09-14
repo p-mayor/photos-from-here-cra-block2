@@ -7,7 +7,7 @@ function Gallery(props) {
             {props.photos.map((photoObj, i) => {
                 return (
                     <GalleryPhoto
-                        src={props.constructImageURL(photoObj, "n")}
+                        src={props.constructImageURL(photoObj, "b")}
                         alt={photoObj.title}
                         key={i}
                         index={i}

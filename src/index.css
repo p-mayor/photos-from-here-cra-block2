@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 * {
   box-sizing: border-box;
 }
@@ -30,9 +32,9 @@ code {
 }
 
 .Gallery img {
-  margin: 10px;
+  padding: 10px;
   max-width: 100vw;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 
 .Photo {
@@ -49,11 +51,22 @@ code {
   border-radius: 10px;
 }
 
-.photoControls span {
-  padding: 15px;
+.photoControls button {
+  margin: 10px;
 }
 
+.photoControls div {
+  display: inline-block;
+  width: 55px;
+}
+
+
 fieldset {
+  width: 300px;
+  margin: auto;
+}
+
+.ant-collapse {
   width: 300px;
   margin: auto;
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Collapse, Button, Input } from 'antd';
 
 function PhotoForm(props) {
     const {
@@ -9,58 +10,50 @@ function PhotoForm(props) {
     } = props.inState
     const locationButton = locationDenied ?
         <div>Update your device's location settings to enable geolocation features.</div> :
-        (<button
-            type="button"
+        (<Button
             onClick={props.getLocationHandler}
             disabled={isLocButtonDisabled}
         >
             Get My Location
-        </button>)
+        </Button>)
+
+    const { Panel } = Collapse;
     return (
-        <details>
-            <summary>Click to Customize Your Search</summary>
-            <fieldset>
+        <Collapse accordion>
+            <Panel header="Click to Customize Your Search">
+                <Button onClick={props.handleRandomSearch}>
+                    Get Random Photos
+                </Button>
+                <hr/>
                 <form onSubmit={props.handleSubmit}>
-                    <div>
-                        <label htmlFor="searchTerm">Search Term:</label>
-                        <br />
-                        <input
+                    <Input.Group>
+                        <Input
+                            addonBefore="Search Term:"
                             type="text"
                             name="searchTerm"
                             value={formData.searchTerm}
                             onChange={props.handleChange}
                         />
-                    </div>
-                    <div>
-                        <label htmlFor="city">City:</label>
-                        <br />
-                        <input
+                        <Input
+                            addonBefore="City:"
                             type="text"
                             name="city"
                             value={formData.city}
                             onChange={props.handleChange}
                         />
-                    </div>
-                    {locationButton}
-                    <div>
-                        <label htmlFor="city">Photo Count:</label>
-                        <br />
-                        <input
+                        {locationButton}
+                        <Input
+                            addonBefore="Photo Count:"
                             type="number"
                             name="photoCount"
                             value={formData.photoCount}
                             onChange={props.handleChange}
                         />
-                    </div>
-                    <br />
-                    <button type="submit" disabled={isPhotoButtonDisabled}>Get My Photos</button>
+                    </Input.Group>
+                    <Button htmlType="submit" type="primary" disabled={isPhotoButtonDisabled}>Get My Photos</Button>
                 </form>
-            </fieldset>
-            <br />
-            <button type="button" onClick={props.handleRandomSearch}>
-                Get Random Photos
-            </button>
-        </details>
+            </Panel>
+        </Collapse>
     )
 }
 
