@@ -1,9 +1,9 @@
 import React from 'react'
 import flickrService from '../services/flickrService'
 import googleMapsService from '../services/googleMapsService'
-import Photo from './Photo'
-import Gallery from './Gallery'
-import PhotoForm from './PhotoForm'
+import Photo from '../components/Photo'
+import Gallery from '../components/Gallery'
+import PhotoForm from '../components/PhotoForm'
 
 import { Button, Switch } from 'antd';
 
@@ -21,7 +21,7 @@ class Home extends React.Component {
             lon: randLon,
             searchTerm: randTerm,
             city: randCity,
-            photoCount: 10,
+            photoCount: 40,
             locationDenied: false,
             isLocButtonDisabled: false,
             isPhotoButtonDisabled: false,
@@ -30,7 +30,7 @@ class Home extends React.Component {
             formData: {
                 searchTerm: randTerm,
                 city: randCity,
-                photoCount: 10
+                photoCount: 40
             }
         }
     }
